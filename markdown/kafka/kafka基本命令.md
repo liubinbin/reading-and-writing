@@ -60,34 +60,3 @@ filePath可以指log，index和timeindex文件。
 https://cwiki.apache.org/confluence/display/KAFKA/System+Tools
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
