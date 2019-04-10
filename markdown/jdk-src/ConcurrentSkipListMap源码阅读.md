@@ -75,11 +75,9 @@ b -> n 到 n -> z -> n
 
 ## 主要函数
 
-findPredecessor：在base level的node里寻找小于指定值的Node。
-
-helpDelete：通过调用n.helpDelete(b, f) 将n删除。第一种情况是在n后面增加marker，第二种情况是将n和后续的marker一并删除。
-
-link：通过调用q.link(r, t)将t插入到q和r之间，主要是通过将t的后继设置为r，然后通过cas将q的后继从r改为t。
+1. findPredecessor：在base level的node里寻找小于指定值的Node。
+2. helpDelete：通过调用n.helpDelete(b, f) 将n删除。第一种情况是在n后面增加marker，第二种情况是将n和后续的marker一并删除。
+3. link：通过调用q.link(r, t)将t插入到q和r之间，主要是通过将t的后继设置为r，然后通过cas将q的后继从r改为t。
 
 
 
