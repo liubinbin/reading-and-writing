@@ -27,7 +27,7 @@
 ##消费消息
 
 ```
-./bin/kafka-console-consumer.sh –boostrap-server broker1:9092,broker2:9092,broker3:9092 --from-beginning --topic liubb
+./bin/kafka-console-consumer.sh --bootstrap-server broker1:9092,broker2:9092,broker3:9092 --from-beginning --topic liubb
 ```
 
 ##消费者性能测试
