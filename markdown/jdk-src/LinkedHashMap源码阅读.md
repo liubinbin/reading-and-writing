@@ -1,19 +1,17 @@
 # LinkedHashMap源码阅读
 
+##代码分析
 
+总整体上看LinkedHashMap是继承HashMap而来的。主体逻辑代码是在HashMap中实现的，但是LinkedHashMap实现了一些自己的特性，在和HashMap比较时有几个方面需要注意。
 
+1. LInkedHashMap有自己的Entry实现，加入了before和after两个与前后的连接。这也体现了名字中Linked的含义。
+2. LinkedHashMap结构有自己的head和tail成员变量。
+3. 实现了newNode和newTreeNode方法，在hashMap加入时增加自己的逻辑，使用before和after加新节点加入到tail后边，让此节点加入到链条中。
+4. 实现了afterNodeRemovel，afterNodeInsertion方法，这两方法都是HashMap帮忙调用的，前一方法可以帮助将节点从链表中移除。后一方法可以会根据removeOldestEntry 结果判断是否删除此节点，所以我们可以通过override这个方法实现固定大小的cache。
+5. 增加accessOrder变量，因为在此结构维护的链表中，节点是按插入顺序排序的。如果此变量为true，afterNodeAccess会帮忙将检索到节点移到链表的最后，使链表按访问顺序的倒序排序，从而实现在做cache时将最旧的数据移除。
 
+##实现为cache
 
-
-
-可以设置true来让linkedhashmap排序，从而cache的效果。
-
-
-
-
-
-override removeOldestEntry 
-
-
-
+1. 可以设置accessOrder为true来让linkedhashmap按访问顺序排序，从而使之更像cache的效果。
+2. 需要override removeOldestEntry方法。 
 
