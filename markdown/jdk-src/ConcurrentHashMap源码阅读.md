@@ -83,10 +83,11 @@ transient volatile Node<K, V>[] nextTable;
 
 ## 值得关注方法和变量
 
-1. Node中有一个Node<K, V> find(int h, Object k) 的方法，是从this开始搜索为k的值。
-2. table这个数组里的值用cas更新。
-3. 在put和remove操作中，对table[hash & (length - 1)] 使用synchronized来保护。
-4. 如果链表长度大于TREEIFY_THRESHOLD的话，就转化成红黑树。
-5. Node的hash为-1时为MOVED等等。
-6. size计算使用了baseCount + counterCells来求值。
+1. Node 中有一个Node<K, V> find(int h, Object k) 的方法，是从 this 开始搜索为k的值。
+2. table 这个数组里的值用 cas 更新。
+3. 在 put 和 remove 操作中，对 table[hash & (length - 1)] 使用 synchronized 来保护。
+4. 如果链表长度大于 TREEIFY_THRESHOLD 的话，就转化成红黑树。
+5. Node 的 hash 为-1时为 MOVED 等等。
+6. size计算使用了 baseCount + counterCells 来求值。
+7. 注意那个 helpTransfer 函数，在很多地方的实现都用了这种 help 操作。就是在操作的时候只给一个标记，可以别的线程看到或者能帮忙处理（在 ConcurrenSkipList 就有）。
 
