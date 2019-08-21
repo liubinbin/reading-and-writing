@@ -30,6 +30,12 @@
 ./bin/kafka-console-consumer.sh --bootstrap-server broker1:9092,broker2:9092,broker3:9092 --from-beginning --topic liubb
 ```
 
+## 查看offset
+
+  ```java
+./bin/kafka-consumer-groups.sh --bootstrap-server broker1:9092,broker2:9092,broker3:9092 --group liubb_group --describe --command-config config/consumer.properties
+  ```
+
 ##消费者性能测试
 
 ```

@@ -2,7 +2,7 @@
 
 ## fsimage查看
 
-hdfs oiv -i -p OPTIONS -i INPUTFILE -o OUTPUTFILE
+hdfs oiv -p OPTIONS -i INPUTFILE -o OUTPUTFILE
 
 INPUTFILE: fsimage文件地址
 
