@@ -21,9 +21,16 @@
 * 在 linux 通过 FileChannel.transferTo 方法实现，使用了 sendfile，采用了零拷贝。
 * kafka 只将数据写入 page cache，刷入磁盘由操作系统完成。
 * Kafka 在 broker 免除了解压缩的消耗，需要确认 2.1 和 2.5 的情况。
+* tickTime：最小时间单位。
+* initLimit：指定 flollower 节点初识时连接 leader 节点的最大 tick 次数。
+* syncLimit：设定了 follower 节点与 leader 节点进行同步的最大 tick 次数。
+* advertiesd.listeners 为发布给 clients 的监听器，可以使用此参数绑定公网 IP 给客户端用。
+
+## producer 开发
+
+* aa
+
 * 
-
-
 
 
 
