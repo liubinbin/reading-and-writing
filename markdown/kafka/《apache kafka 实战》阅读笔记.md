@@ -2,7 +2,11 @@
 
 ## 认识Apache Kafka
 
-* aaa
+* kafka 直接使用了 ByteBuffer，减少 java 对象造成的字节膨胀。
+* 使用页缓存在 broker 崩溃后重启后仍可以使用。
+* kafka 使用 topic-partition-message 三级结构。
+* 使用<topic，partition，offset> 可以唯一确定消息。
+* ISR 全称为 in-sync replica，只有这个集合内才会被选举为 leader，也只有集合中所有的 replica 接收到同一条消息，才能讲此消息称为“已提交”。
 
 ## Kafka 发展历史
 
@@ -17,7 +21,7 @@
 * 在 linux 通过 FileChannel.transferTo 方法实现，使用了 sendfile，采用了零拷贝。
 * kafka 只将数据写入 page cache，刷入磁盘由操作系统完成。
 * Kafka 在 broker 免除了解压缩的消耗，需要确认 2.1 和 2.5 的情况。
-* ​
+* 
 
 
 
