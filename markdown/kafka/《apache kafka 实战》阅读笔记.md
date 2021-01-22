@@ -28,9 +28,19 @@
 
 ## producer 开发
 
-* aa
+* https://cwiki.apache.org/confluence/display/KAFKA/Clients
 
-* 
+* buffer.memory 指定了 producer 端用于缓存消息的缓冲区大小。
+* batch.size 和 linger.ms 影响 batch 大小。
+* producer 的拦截器包括三个开放接口（onSend，onAcknowledgement 和 close）。
+* kafka 的压缩时在 producer 和 consumer 端执行压缩和解压缩。
+* kafkaProducer 为线程安全。
+
+##consumer开发
+
+* aaa
+
+
 
 
 
