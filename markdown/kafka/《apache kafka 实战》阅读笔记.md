@@ -38,7 +38,15 @@
 
 ##consumer开发
 
-* aaa
+* kafka consumer 内部使用一个 map 来保存其订阅 topic 所属分区的 offset。
+* __consumer_offsets 内的记录为三元组，group.id+topic+ partition, offset，在内部定期执行 compact 保存最新的 offset。
+* session.timeout.ms 代表 coordinator 检测失败时间，max.poll.interval.ms 代表处理消息的最大时间。heartbeat.interval.ms 通知 coordinator 保持 group 状态。
+* consumer 采用了 poll 的设计，使用一个线程来同时管理多个 socket 的连接。一个 KafkaConsumer 有两个线程，一个时 poll 主线程，一个是心跳线程。
+* KafkaConsumer 不是线程安全的，wakeup 方法可以在另外的线程调用。
+* 上次提交位置 <= 当前位置 <= 水位 <= 日志最新位移
+* consumer 提交位移通过向所属的 coordinator 发送位移提交请求来实现的。
+* commitSync 是在 poll 里现实的，非单独线程实现。
+* 
 
 
 
