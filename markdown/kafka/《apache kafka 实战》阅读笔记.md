@@ -46,6 +46,34 @@
 * 上次提交位置 <= 当前位置 <= 水位 <= 日志最新位移
 * consumer 提交位移通过向所属的 coordinator 发送位移提交请求来实现的。
 * commitSync 是在 poll 里现实的，非单独线程实现。
+* rebalance generation 来标识第几届 rebalance。
+* consumer group 的 leader 为整个 group 分配方案。整个的 rebalance 的操作有两个步骤，分别是加入组（确定 leader ）和同步更新分配方案。
+* 可以使用独立的 consumer 通过 assing 来分配 TP 的消费问题。
+
+## kafka 设计原理
+
+* v2 版本的消息格式回保存 PID 和 epoch 和序列号等，用于实现幂等性和事务。
+* 剔出 ISR 的只有 replica.lag.time.max.ms，用于检测持续落后的情况，可以兼容瞬间峰值流量。
+* follower 发送过来的 FETCH 请求因为无数据而暂时被寄存到 leader 的 purgatory 中。
+* follower 的 leo 是在下一轮 fetch 中向 leader 回报 leo。
+* leader epoch 和 offset 一起组成 （ epoch， offset）来解决数据问题。代码主要在LeaderEpochCache 和 LeaderEpochCheckpointFile 类中。
+* 位移索引文件保存的是<相对位移，文件物理位置>，时间戳索引文件保存的是<时间戳，相对位移>。相对位移指的是索引文件起始位置的差值。
+* https://kafka.apache.org/protocol 包含了 kafka 使用到的协议。
+* meta 的信息是保存在每个 broker 中，而且是相同的元数据。
+* bin/kafka-broker-api-versions.sh 来查看每个请求的版本。
+* controller 把更新元数据请求封装好（UpdateMetadataRequests）发给每个 broker。
+*  受控关闭时 broker 的发送 ControlledShutdownRequest 给 controller 来控制。
+* kafka 里重要的数据组件 ControllerContext，在 1.0.0 版本，使用单线程的基于事件的模型，使用了 LinkedBlockingQueue 保护 controller 的状态。
+* broker 中，processor 线程负责将请求放入队列，一个 processor 负责多个 socket，内部使用 Selector 来管理，并且有与 processor 一一对应的处理 response 的线程，KafkaRequestHandler 处理具体的请求。
+* broker 处理请求： 1. 启动 acceptor。2. acceptor 监听到有 socket 连接。3. 讲请求发送给 processor。4. processor 获取到后将请求给 KafkaRequestHandler。5. 请求处理完返回到 processor。6. processor 会给给客户端。
+* consumer group 分配策略是 consumer 端实现的。
+* PreparingRebalance 等待新成员进入（耗时 max.poll.interval.ms）为 AwaitingSync 状态开始分配消费方案。
+* 对于实现幂等性，producer 会得到一个<PID + 分区号，序列号>，所以只能实现当个 producer EOS。
+* 对于事务，有了 TransactionalId 可以保证多会话之间的事务。使用了 generation 来隔离分代事务。
+* 对于原子性写入多个，使用了一类特殊消息，即控制消息，在消息属性字段（attribute field）中专门使用1来表征他是控制消息，卸载多个。
+
+## 管理 kafka 集群
+
 * 
 
 
