@@ -74,11 +74,20 @@
 
 ## 管理 kafka 集群
 
+* 升级 kafka。1. 在 server.properties 里指定 inter.broker.protocol.version 和 log.message.format.version 为旧版本。2. 更新 jar 包，重启 broker。3. 在 server.properties 里指定 inter.broker.protocol.version 和 log.message.format.version 为新版本。4. 一次重启 broker。
+* 新增 broker 节点，旧的 topic 不会自动均衡，需要认为操作。
+* kafka-consumer-groups 设置的 conusmer group 必须为 inactive。
+* 消息者组信息保留时间为 offset.retention.minutes，此参数计算为最后一个成员退出组开始算。
+* kafka-preferred-replica-election.sh 来调整 preferred leader。auto.leader.rebalance.enable 是帮组用户自动执行此操作。
+* kafka-reassign-paritions.sh 来调整分区的分配，有 generate，execute 和 verify。也可以用于增加副本。
+* 使用 kafka-run-class.sh kafka.tools..DumpLogSegments 来查看信息。关注 baseOffset 和 lastOffset 是否相等，可以查看被压缩进一条wrap消息的多条消息，也可以使用 --deep-iteration 来查看详细信息。
+* 使用 GetOffsetShell 来获取总消息数。
+* kafka-simple-consumer-shell.sh --topic __consumer_offsets --partition 25 --broker-list localhost:9092 --formatter "kafka.coordinator.group.GroupMetadataManager\$OffsetsMessageFormatter" 读取内部 topic 的信息。
+* 在 API 层可以使用 AdminClient 来管理集群。
+
+## 监控kafka集群
+
 * 
-
-
-
-
 
 
 
