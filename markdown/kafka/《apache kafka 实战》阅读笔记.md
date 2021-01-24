@@ -85,11 +85,27 @@
 * kafka-simple-consumer-shell.sh --topic __consumer_offsets --partition 25 --broker-list localhost:9092 --formatter "kafka.coordinator.group.GroupMetadataManager\$OffsetsMessageFormatter" 读取内部 topic 的信息。
 * 在 API 层可以使用 AdminClient 来管理集群。
 
-## 监控kafka集群
+## 监控 kafka 集群
+
+* Kafka JMX MBean 监控kafka 的信息，主要包括 1. kafka broker 2. clients 3. producer 4. consmer。详细信息见 http://kafka.apache.org/documentation/#monitoring。
+* 入站消息费率：kafka.server:type=BrokerTopicMetrics,name=BytesInPerSec 
+* 出战消息费率：kafka.server:type=BrokerTopicMetrics,name=BytesOutPerSec 
+* 当前集群中 active controller 个数：kafka.controller.type=KafkaController,name=ActiveControllerCount 
+* 备份不足的分区数：kafka.server:type=ReplicateManager,name=UnderReplicatedPartitions
+* leader分区数：kafka.server:type=ReplicateManager,name=LeaderCount
+* ISR变化速率：kafka.server:type=ReplicateManager,name=IsrExpandsPerSec，kafka.server:type=ReplicateManager,name=IsrShrinksPerSec
+* broker I/O 工作处理线程空闲率：kafka.server:type=SocketServer,name=NetWorkProcessorAvgIdlePercent
+* broker 网络处理线程空闲率：kafka.server:type=KafkaRequestHandlerPool,name=RequestHandlerAvgIdlePercent
+* producer 的 MBean 有 kafka.producer:type=producer-type-metrics,client-id=<CLINET_ID>,node-id=<BROKER_ID> 和 kafka.producer:type=producer-topic-metrics,client-id=<CLIENT_ID>,topic=<TOPIC>
+* consumer 的 MBean 有 fetcher 类，coordinator 类和 consumer 类。
+* JVM 进程状态主要是 java.lang:type=OperatingSystem、MaxFileDescriptionCount 和 java.lang:type=OperatingSystem、OpenFileDescritporCount
+* GC性能主要是 java.lang:typeGarbageCollector...等， 包括老年代和新生代的 gc 次数和时长，还有一个指标是 LastGcInfo 记录上一次 GC 的详情信息。
+* 主流监控框架包括 JmxTool，kafka-manger、kafka monitor（使用了一个 topic 去检测信息）、Kafka Offset Monitor（不更新，不建议使用）、CruiseControl 
+* kafka-run-class.sh kafka.tools.JmxTool 加参数可以用于监控 jmx。
+
+## 调优 kafka 集群
 
 * 
-
-
 
 
 
