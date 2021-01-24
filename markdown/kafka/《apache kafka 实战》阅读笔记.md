@@ -105,9 +105,13 @@
 
 ## 调优 kafka 集群
 
+* 主意一下 num.replica.fetchers 这个参数，该值控制 broker 端 follower 副本从的 leader 副本拉取消息的最大线程数。
+* min.insync.replicas 来制定了若要成功写入某条消息则必须要等待响应完成的最少 ISR 服本数。比较建议为 replication.factor -1，也可以为 1。
+*  num.recovery.threads.per.data.dir 在多盘的情况下，适当变大来加快从崩溃中恢复。
+
+## Kafka Connect 与 Kafka Streams
+
 * 
-
-
 
 
 
