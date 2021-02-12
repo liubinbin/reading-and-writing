@@ -2,4 +2,9 @@
 
 ## 初识kafka
 
+* Conumser使用拉（pull）模式从服务端拉去消息。
+* 服务端里的 listener 和 advertised.listeners 的区别。
 
+## 生产者
+
+* 
