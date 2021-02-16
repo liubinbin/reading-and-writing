@@ -12,3 +12,16 @@
 * ProducerBatch 是按 batch.size 大小组织的，可以利用到 BufferPool 的内存管理机制。
 * 发送出去还未收到响应的是在 InFlightRequests，形式是 Map<NodeId, Deque<Request>>，可以通过 max.in.flight.requests.per.connection 来影响（每个链接最左为响应的请求）。
 * request.timeout.ms 比 replica.lag.time.max.ms 要大一些，减少因客户端重试而引起的消息重复的概率，可以看看。
+
+## 消费者
+
+* subscribe 可以订阅 topic，assign 可以订阅 TP，partitionFor 可以获取到所有分区信息。
+* 推荐使用通用的序列化功能。
+* 自动提交位移是在 poll 方法里执行的。
+* wakeup 是 KafkaConsumer 唯一从别的线程安全调用的方法的，可用用于退出 poll 逻辑。
+* 可以使用 seek 方法指定 offset。
+* 使用滑动窗口来实现异步处理消息消费和消息处理。
+
+## 主题与分区
+
+* 
