@@ -65,4 +65,6 @@ filePath可以指log，index和timeindex文件。
 
 https://cwiki.apache.org/confluence/display/KAFKA/System+Tools
 
+# zk digest 操作命令
 
+https://www.cnblogs.com/yjmyzz/p/zookeeper-acl-demo.html
