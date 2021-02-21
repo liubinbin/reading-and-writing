@@ -24,4 +24,18 @@
 
 ## 主题与分区
 
+* 创建 topic 时可以使用 replica-assignment 参数手动指定分区副本的分配方案。
+* kafka-topic.sh 脚本里的 unavailable-partitions 参数可以看到没有 leader 副本的分区，此处可以和 offlinePartitions MBean 比较。
+* topics-with-overrides 来显示有覆盖配置的 topics。
+* 可以使用 org.apache.kafka.clients.admin.KafkaAdminClient 来通过代码控制 topic。
+* 可以通过 create.topic.policy.class.name 设置服务校验 topic 合法性。 
+* 自动分区平衡使用 auto.leader.balance.enable 来控制，具体阈值为 leader.imbalance.per.broker.percentage。通过 kafka-preferred-replica.election.sh 脚本来进行 leader 的重新平衡，有 --path-to-json-file 参数可以指定需要执行的 TP。
+* kafka-reassign-partitions.sh 脚本来处理集群扩容和节点失效的场景，生成计划有 --generate --topics-to-move-json-file reassign.json --broker-list 0,1，执行有 --execute --reassignment-json-file。可以同时设置速度。
+* 下限 broker 时可以先关闭或重启 broker，这样 broker 就不会有 leader 分区了。
+* 副本限流有配置 follower.replication.throttled.rate 和 leader.replication.throttled.rate，可通过 kafka-configs.sh 来设置。
+* ls /proc/{$PID}/fd | wc -l 查看占用文件描述符个数。
+
+## 日志存储
+
 * 
+
