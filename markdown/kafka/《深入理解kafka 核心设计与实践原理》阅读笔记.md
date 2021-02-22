@@ -37,5 +37,17 @@
 
 ## 日志存储
 
-* 
+* 变长字段使用了 ZigZag 编码，具体内容参见 org.apache.kafka.common.utils.ByteUtils 来实现。
+* Record 的字段使用了很多 delta，可以节省空间。
+* 日志内容可以使用 bin/kafka-dump-log.sh --files $file-path --print-data-log 来查看。
+* 稀疏索引使用 log.index.interval.bytes 来控制，索引文件通过 MappedByteBuffer 将索引映射到内存中。
+* 时间戳索引里保存的是消息相对偏移量，消息的文件位置需要从偏移量索引中获取。
+* linux 脏页刷写可以查看 vm.dirty_background_ratio、vm.dirty_expire_centisecs 和 vm.dirty_writeback.centisecs 相关内容。
+* 作者不建议使用 log.flush.interval.messages 和 log.flush.interval.ms 来强制刷写磁盘，而通过多副本。
+* 建议设置 vm.swappiness=1。
+* java 内的零拷贝技术是 FileChannel.transferTo 方法。
+* 零拷贝通过 DMA 讲内容复制到 Read Buffer，讲 fd 给 Socker Buffer，然后给网卡设备。
 
+## 深入服务器
+
+* 
