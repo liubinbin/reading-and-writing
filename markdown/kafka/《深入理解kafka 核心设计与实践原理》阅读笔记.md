@@ -50,4 +50,18 @@
 
 ## 深入服务器
 
+* fetch.max.wait.ms 默认为 500。
+* 在 fetch 稳定后，fetchRequest 会根据 session 和 epoch 来缓存 topic 等信息，这样就可以不用传递 topic 等信息了。
+* 时间轮通过多层来实现，第二层时间轮的 tickMs 为第一层时间轮的 interval。interval = tickMs * wheelSize。
+* 时间轮是个存储定时任务的环形队列，里面存放了 TimerTaskList。
+* 时间轮通过将任务传入 DelayQueue 来推进时间来实现任务处理。
+* 延时管理器通过 DelayOperationPurgatory 来做处理，每个操作配置了一个 SystemTimer，底层采用了时间轮实现。
+* 通过 controller_epoch 来控制控制器的唯一性。
+* kafka 服务内有 kafka-shutdown-hock 的钩子处理，处理资源释放和 leader 分区迁移。
+* 在 meta.properties 里会保存 broker.id ，若和其他地方的配置不符合会报 InconsistentBrokerIdExcpetion。
+* bootstrap.servers 的地址只用于获取元数据信息，可以将此功能与读写分开。腾讯逻辑集群实现是类似思路。
+
+## 深入客户端
+
 * 
+
