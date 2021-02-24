@@ -63,5 +63,22 @@
 
 ## 深入客户端
 
-* 
+* 客户端有 partition.assignment.strategy 来制定策略，有 RangeAssignor、RoundRobinAssignor 和 StickyAsignor（减少不必要的分区移动）。
+* 每个消费组由 GroupCorrdinator 和 ConsumerCorrdinator 协调。
+* GroupCoordinator 有 Utils.abs(groupId.hashCode) % groupMetadataTopicPartitionCount 来确定分区号，然后找此节点的 Leader。
+* rebalance 包含 FIND_COORDINATOR -> JOIN_GROUP -> SYNC_GROUP -> HEARTBEAT 。
+* 在 heartbeat 阶段时，只要保持了心跳，就会被认为是活跃的，是没有问题的。心跳线程是个单独线程。
+* 关注 offsets.retention.minutes 的默认值为 10080（即 7 天），超过这个时间点的消费位移信息会被删除。
+* kafka-console-consumer.sh --xxxxx  --formatter ‘kafka.coordinator.group.GroupMetadataManager$OffsetsmessageFormatter’ 来查看 __consumer_offsets。
+* 在删除主题时，会一并将消费位移信息删除。
+* 如果开启幂等（设置 enable.idempotence 为 true），则 broker 会为每个<PID, 分区>维护一个序列号。
+* 事务可以保证对多个分区写入操作的原子性。
+* transactionalID （客户端指定）获取 PID 的同时，会获取一个单调递增的 producer epoch。
+* 消费端有一个参数 isolatiion.level，默认 read_uncommitted，也可以设置为的 read_committed。
+* 除了普通消息，还有一种控制消息（ControlBatch），有两种类型（COMMIT 和 ABORT）。
+* TransactionCoordinator 来控制，会将消息持久化到 __transaction_state 中。
+* 查找 TransactionCoordinator -> 获取 PID -> 开启事务 -> Consume-Transform-Produce -> 提交或终止事务。 
 
+## 可靠性探究
+
+* 
