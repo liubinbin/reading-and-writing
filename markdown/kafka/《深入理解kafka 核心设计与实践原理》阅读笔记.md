@@ -81,4 +81,14 @@
 
 ## 可靠性探究
 
+*  数据和服务做副本处理。
+* 当 follower 副本将 leader 副本 LEO 之前的日志全部同步时，则认为该 follower 副本已经追上 leader，则更新 lastCaughtUpTimeMs 标识，replica.lag.time.max.ms 参数则用来判断这个值用的。
+* 区分 LEO 和 HW，HW = min{LEO}。
+* recovery-point-offset-checkpoint、replication-offset-checkpoint 和 log-start-offset-checkpoint 分别记录了 LEO、HW 和 logStartOffset 信息。
+* HW 是下一轮 FetchRequest/FetchResponse 请求之后更新的。
+* 引入 leader epoch 来解决 Partition 之间数据不一致和丢失的问题。
+* 只有在 ISR 里的副本可以进入选举，除非设置了 unclean.leader.election.enable 为 true（判断方法值得看看）。
+
+## Kafka 应用
+
 * 
