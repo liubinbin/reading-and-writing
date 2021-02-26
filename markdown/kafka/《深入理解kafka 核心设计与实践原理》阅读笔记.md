@@ -91,4 +91,12 @@
 
 ## Kafka 应用
 
+* bin/kafka-consumer-groups.sh 可以看组信息。有 --list、--state、members 和 --verbose。其中显示的 LOG-END-OFFSET 标识 HW。此脚本还提供了消费位移管理功能，可以重置 offset。
+* bin/kafka-delete-records.sh 可以删除消息到指定 TP 的指定 offset。实质是将设置 logStartOffset。
+* kafka connect 可以支持从 kafka 导入或导出，数据范围包括数据库等。
+* kafka mirror maker 可以在集群间复制，其实就是启动了生产者和消费者。有脚本 bin/kafka-mirror-maker.sh 。uReplicator 
+
+## Kafka 监控
+
 * 
+
