@@ -98,5 +98,9 @@
 
 ## Kafka 监控
 
+* OneMinuteRate 是个拟合值，比较倚重历史数据，所以只在平稳的时候有参考价值。具体见 M1_ALPHA 细节。
+
+## Kafka 应用
+
 * 
 
