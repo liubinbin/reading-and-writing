@@ -48,12 +48,79 @@
 
 ## 分布式存储与Ceph
 
-* 
+*  ceph 底层 RADOS 是对象存储系统，librados 基于此。
+
+* OSD 层里每个 object 有标记符、二进制数据和原数据。
+
+* OSD 向 monitor 集群汇报故障，客户端通过 OSD 连接 IO。
+
+* 每个文件有 ino、文件由 object组成（oid）；hash（oid）% mask -> pgid；crush（pgid） -> （OSD1、OSD2）
+
+* PG 和 PGP 的区别。
+
+* 数据为 primary-replica 模型，强一致性，默认从 primary 读取，也可配置从 replica 读取。
+
+* cache Tiering（写回、forward、readonly、readforward、readproxy、proxy）
+
+* 块存储主要是需要做条带化，由 kernel/librbd 两种形式。
+
+* cephFS 里有 MDS 根据目录长度、访问频率等分割；使用动态子树方法；quota可以针对目录。
+
+* BlueStore 重要分为数据管理、原数据管理和空间管理。
+
+  kvDB：RocketDB
+
+  Allocator：最小单元格式化，使用 Bitmap 分配。
+
+  BlueFS： for RocketDB
+
+  元数据：共享 BlueStore 的块设备
+
+  BlockDevice
+
+* SeaStore 为新一代 ObjectStore。
+
+* CRUSH 由 CRUSH map、CRUSH Rule 和 OSD Map 组成。
+
+* 可以使用 curshTool 来查看信息。
+
+* RBD 的 mirror 主要通过 journal 来实现。
+
+* RBD snapshot 使用 COW 来做。
+
+* ceph 通过 pglog 来数据恢复，pglog 包含对象信息和 pg 版本号，主要通过 last_complete 和 last_update 来控制。
+
+* pglog 由 PG 锁。
+
+* ceph 的一致性由 PG 层的 pglock、Store 层的 OpSequencer。
+
+* RBDCache 可认为是块设备的内部缓存。
+
+* barrier_passing 在事务基本，可提高效率。
+
+* QoS 主要是设置规则、共享资源。
+
+* 后端 QoS 在 OSD 内部按 PG 分组。
+
+* mClock 主要由预留值、最小值和权重。
+
+* 测试方法：fio -> 块；bonnie++ -> 文件；CoSBench 或 Swift-Bench -> 对象
+
+* 集群性能数据可通过 Ceph Perf Counters 获取，可通过命令 ceph daemon <> perf dump。
+
+* 综合测试分析工具由 CBT 和 CeTune。
+
+* ObjectStore 的 fio 代码在 src/test/fio 中。
+
+* OSD 层实现了 op-tracker 机制。
 
 ## OpenStack存储
 
-* 
+* 无
 
 ## 容器存储
 
-* 
+* 临时存储，有可写层，联合文件系统。
+* k8s 里的 Label 机制，Deployment 概念。
+* PV：持久化存储卷；PVC：向平台对于存储资源的请求。
+* CSI 用于 k8s 和存储方解耦。
