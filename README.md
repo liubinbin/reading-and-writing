@@ -1,2 +1,3 @@
-# src-reading
-some analyses and impressions after reading some src.
+# reading-and-writing
+some analyses for src.
+impressions of reading books.
